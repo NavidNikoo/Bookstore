@@ -8,21 +8,22 @@ if (!isset($user_id)) {
   header('location:login.php');
 }
 
-if (isset($_POST['add_to_cart'])) {
-  $pro_name = $_POST['product_name'];
-  $pro_price = $_POST['product_price'];
-  $pro_quantity = $_POST['product_quantity'];
-  $pro_image = $_POST['product_image'];
+if(isset($_POST['add_to_cart'])){
+    $product_name = mysqli_real_escape_string($conn, $_POST['product_name']);
+    $product_price = $_POST['product_price'];
+    $product_image = $_POST['product_image'];
+    $product_quantity = $_POST['product_quantity'];
 
-  $check = mysqli_query($conn, "SELECT * FROM `cart` where name='$pro_name' and user_id='$user_id'") or die('query failed');
+    $check_cart_numbers = mysqli_query($conn, "SELECT * FROM `cart` WHERE name='$product_name' AND user_id='$user_id'");
 
-  if (mysqli_num_rows($check) > 0) {
-    $message[] = 'Already added to cart!';
-  } else {
-    mysqli_query($conn, "INSERT INTO `cart`(user_id,name,price,quantity,image) VALUES ('$user_id','$pro_name','$pro_price','$pro_quantity','$pro_image')") or die('query2 failed');
-    $message[] = 'Product added to cart!';
-  }
+    if(mysqli_num_rows($check_cart_numbers) > 0){
+        $message[] = 'Already added to cart!';
+    } else {
+        mysqli_query($conn, "INSERT INTO `cart`(user_id, name, price, quantity, image) VALUES('$user_id','$product_name','$product_price','$product_quantity','$product_image')");
+        $message[] = 'Product added to cart!';
+    }
 }
+
 
 ?>
 
@@ -67,7 +68,7 @@ if (isset($_POST['add_to_cart'])) {
           <form action="" method="post" class="pro_box">
             <img src="./uploaded_img/<?php echo $fetch_products['image']; ?>" alt="">
             <h3><?php echo $fetch_products['name']; ?></h3>
-            <p>Rs. <?php echo $fetch_products['price']; ?>/-</p>
+            <p>$<?php echo $fetch_products['price']; ?></p>
           
             <input type="hidden" name="product_name" value="<?php echo $fetch_products['name'] ?>">
             <input type="number" name="product_quantity" min="1" value="1">

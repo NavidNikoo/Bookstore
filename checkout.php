@@ -14,7 +14,7 @@ if(isset($_POST['order_btn'])){
   $email = mysqli_real_escape_string($conn, $_POST['email']);
   $method = mysqli_real_escape_string($conn, $_POST['method']);
   $address = mysqli_real_escape_string($conn, $_POST['address']);
-  $placed_on = date('d-M-Y');
+    $placed_on = date('Y-m-d H:i:s');
 
   $cart_total = 0;
   $cart_products[] = '';
@@ -28,11 +28,13 @@ if(isset($_POST['order_btn'])){
       }
    }
 
-   $total_products = implode(' ',$cart_products);
+    $total_products = implode(' ',$cart_products);
+    $total_products = mysqli_real_escape_string($conn, $total_products); // ✅ this line prevents syntax errors
 
-   $order_query = mysqli_query($conn, "SELECT * FROM `orders` WHERE name = '$name' AND number = '$number' AND email = '$email' AND method = '$method' AND address = '$address' AND total_products = '$total_products' AND total_price = '$cart_total'") or die('query failed');
+    $order_query = mysqli_query($conn, "SELECT * FROM `orders` WHERE name = '$name' AND number = '$number' AND email = '$email' AND method = '$method' AND address = '$address' AND total_products = '$total_products' AND total_price = '$cart_total'") or die('query failed');
 
-   if($cart_total == 0){
+
+    if($cart_total == 0){
       $message[] = 'your cart is empty';
    }else{
       if(mysqli_num_rows($order_query) > 0){
@@ -81,7 +83,7 @@ include 'user_header.php';
     <img src="./uploaded_img/<?php echo$fetch_cart['image'];?>" alt="">
     <div class="single_des">
     <h3><?php echo $fetch_cart['name'];?></h3>
-    <p>Rs. <?php echo $fetch_cart['price'];?></p>
+    <p>$ <?php echo $fetch_cart['price'];?></p>
     <p>Quantity : <?php echo $fetch_cart['quantity'];?></p>
     </div>
 
@@ -94,7 +96,7 @@ include 'user_header.php';
   echo '<p class="empty">your cart is empty</p>';
 }
   ?>
-  <div class="checkout_grand_total"> GRAND TOTAL : <span>$<?php echo $grand_total; ?>/-</span> </div>
+  <div class="checkout_grand_total"> GRAND TOTAL : <span>$<?php echo $grand_total; ?></span> </div>
 </section>
 
 

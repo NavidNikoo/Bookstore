@@ -29,7 +29,7 @@ if(!isset($user_id)){
 include 'user_header.php';
 ?>
 <section class="about_cont">
-    <img src="about1.jpg" alt="">
+    <img src="about1.png" alt="">
     <div class="about_descript">
       <h2>Why Choose Us ?</h2>
       <p>At The Hidden Shelf, we do more than sell books — we curate experiences. Whether you're diving into fantasy realms, uncovering forgotten histories, or seeking wisdom in quiet philosophy, our shelves are lined with carefully selected titles for every kind of reader.
